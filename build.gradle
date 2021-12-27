@@ -5,6 +5,9 @@ plugins {
 group 'org.example'
 version '1.0-BETA'
 
+// Minimal version compatibility Java 11+
+sourceCompatibility = 1.11
+
 repositories {
     mavenCentral()
 }
