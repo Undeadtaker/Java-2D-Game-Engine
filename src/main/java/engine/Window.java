@@ -4,6 +4,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -73,6 +74,17 @@ public class Window
             throw new IllegalStateException("Failed to create new GLFW window");
         }
 
+        // We crate a lambda function to get the mouse location, :: -> lambda function
+        // We don't have to create an instance of MouseListener, we simply call the static
+        // functions for the glfw
+        glfwSetCursorPosCallback(final_window, MouseListener::mousePosCallback);
+        glfwSetMouseButtonCallback(final_window, MouseListener::mouseButtonCallback);
+        glfwSetScrollCallback(final_window, MouseListener::mouseScrollCallback);
+
+        // Making callback to key listener
+        glfwSetKeyCallback(final_window, KeyListener::keyCallback);
+
+
         // Make OpenGL context current
         glfwMakeContextCurrent(final_window);
 
@@ -103,8 +115,18 @@ public class Window
             glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
+            // We check for key pressed
+            if(KeyListener.isKeyPressed(GLFW_KEY_SPACE))
+            {
+                System.out.println("Space key pressed");
+            }
+
+
             // Swap back to the original window buffer
             glfwSwapBuffers(final_window);
+
+
+
 
         }
     }
