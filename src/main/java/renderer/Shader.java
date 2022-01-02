@@ -1,6 +1,6 @@
 package renderer;
 
-import org.joml.Matrix4f;
+import org.joml.*;
 import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
@@ -17,6 +17,7 @@ public class Shader
     // Variables
     private int shaderProgramID;
     private String vertexSource, fragmentSource, filepath;
+    private boolean b_isUsed = false;
 
 
 
@@ -132,26 +133,83 @@ public class Shader
 
     public void use()
     {
-        // Bind shader program
-        glUseProgram(shaderProgramID);
+        if(!this.b_isUsed)
+        {
+            // Bind shader program
+            glUseProgram(shaderProgramID);
+            this.b_isUsed = true;
+        }
     }
 
     public void detach()
     {
         glUseProgram(0);
+        this.b_isUsed = false;
     }
 
 
-    // Function that puts the Matrix4f into the buffer to be rendered to the screen
+    // Function that uploads the matrix4f into the shader, is then
+    // sent to the GPU. Is in the format of the 16 bit matrix as
+    // [1,1,1,1, ... 1] - 16 ones.
     public void uploadMat4f(String varName, Matrix4f mat4)
     {
         int varLocation = glGetUniformLocation(shaderProgramID, varName);
+        this.use();
         FloatBuffer matBuffer = BufferUtils.createFloatBuffer(16); // capacity is 16 since its 4x4 matrix
         mat4.get(matBuffer);
         glUniformMatrix4fv(varLocation, false, matBuffer);
-
     }
 
+    // Function that uploads matrix3f to the shader
+    public void uploadMat3f(String varName, Matrix3f mat3)
+    {
+        int varLocation = glGetUniformLocation(shaderProgramID, varName);
+        this.use();
+        FloatBuffer matBuffer = BufferUtils.createFloatBuffer(9); // capacity is 16 since its 4x4 matrix
+        mat3.get(matBuffer);
+        glUniformMatrix3fv(varLocation, false, matBuffer);
+    }
+
+
+    // Function that uploads Vector4f to the shader
+    public void uploadVec4f(String varName, Vector4f vec)
+    {
+        int varLocation = glGetUniformLocation(shaderProgramID, varName);
+        this.use();
+        glUniform4f(varLocation, vec.x, vec.y, vec.z, vec.w);
+    }
+
+    // Function that uploads Vector3f to the shader
+    public void uploadVec3f(String varName, Vector3f vec)
+    {
+        int varLocation = glGetUniformLocation(shaderProgramID, varName);
+        this.use();
+        glUniform3f(varLocation, vec.x, vec.y, vec.z);
+    }
+
+    // Function that uploads Vector2f to the shader
+    public void uploadVec2f(String varName, Vector2f vec)
+    {
+        int varLocation = glGetUniformLocation(shaderProgramID, varName);
+        this.use();
+        glUniform2f(varLocation, vec.x, vec.y);
+    }
+
+    // Function that uploads Float to the shader
+    public void uploadFloat(String varName, float floatToUpload)
+    {
+        int varLocation = glGetUniformLocation(shaderProgramID, varName);
+        this.use();
+        glUniform1f(varLocation, floatToUpload);
+    }
+
+    // Function that uploads Int to the shader
+    public void uploadInt(String varName, int intToUpload)
+    {
+        int varLocation = glGetUniformLocation(shaderProgramID, varName);
+        this.use();
+        glUniform1i(varLocation, intToUpload);
+    }
 
 }
 

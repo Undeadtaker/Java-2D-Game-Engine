@@ -154,7 +154,7 @@ public class Window
             glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            if (dt >= 0) currentScene.update(dt);
+            if (dt >= 0) currentScene.update(dt + 0.03f);
 
             // Swap back to the original window buffer
             glfwSwapBuffers(final_window);

@@ -3,6 +3,7 @@ package engine;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import renderer.Shader;
+import util.Time;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -120,12 +121,14 @@ public class LevelEditorScene extends Scene {
     public void update(float dt)
     {
 
-        this.camera.position.x -= dt * 50.0f;
+        this.camera.position.x -= dt * 10.0f;
+        this.camera.position.y -= dt * 5.0f;
 
-        // Bind shader program
+        // Bind shader program, upload variables to shader
         defaultShader.use();
         defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
         defaultShader.uploadMat4f("uView", camera.getViewMatrix());
+        defaultShader.uploadFloat("uTime", Time.getTime());
 
         // Bind the VAO that we're using
         glBindVertexArray(vaoID);
