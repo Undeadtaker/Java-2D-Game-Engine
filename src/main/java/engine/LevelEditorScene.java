@@ -1,5 +1,7 @@
 package engine;
 
+import ECS.Components.SpringRenderer;
+import ECS.GameObject;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import renderer.Shader;
@@ -62,6 +64,10 @@ public class LevelEditorScene extends Scene {
     private Shader defaultShader;
     private Texture testTexture;
 
+    public GameObject gameObject;
+    private boolean b_firstTime = false;
+
+
 
 
 
@@ -78,7 +84,13 @@ public class LevelEditorScene extends Scene {
     @Override
     public void init()
     {
+        // Creating Test Object
+        System.out.println("Creating test object in INIT method");
+        this.gameObject = new GameObject("test object");
+        this.gameObject.addComponent(new SpringRenderer());
+        this.addGameObjectToScene(this.gameObject);
 
+        // Initialize all objects
         this.camera = new Camera(new Vector2f());
 
         try {
@@ -166,6 +178,17 @@ public class LevelEditorScene extends Scene {
         glBindVertexArray(0);
 
         defaultShader.detach();
+
+        if(!this.b_firstTime)
+        {
+            System.out.println("Creating test object in LOOP method");
+            GameObject obj = new GameObject("test object in loop");
+            obj.addComponent(new SpringRenderer());
+            this.addGameObjectToScene(obj);
+            this.b_firstTime = true;
+        }
+
+        for (GameObject go_obj : this.gameObjects) go_obj.update(dt);
 
     }
 }
