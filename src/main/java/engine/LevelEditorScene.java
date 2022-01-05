@@ -1,6 +1,6 @@
 package engine;
 
-import ECS.Components.SpringRenderer;
+import ECS.Components.SpriteRenderer;
 import ECS.GameObject;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
@@ -87,7 +87,7 @@ public class LevelEditorScene extends Scene {
         // Creating Test Object
         System.out.println("Creating test object in INIT method");
         this.gameObject = new GameObject("test object");
-        this.gameObject.addComponent(new SpringRenderer());
+        this.gameObject.addComponent(new SpriteRenderer());
         this.addGameObjectToScene(this.gameObject);
 
         // Initialize all objects
@@ -183,7 +183,7 @@ public class LevelEditorScene extends Scene {
         {
             System.out.println("Creating test object in LOOP method");
             GameObject obj = new GameObject("test object in loop");
-            obj.addComponent(new SpringRenderer());
+            obj.addComponent(new SpriteRenderer());
             this.addGameObjectToScene(obj);
             this.b_firstTime = true;
         }

@@ -2,7 +2,7 @@ package ECS.Components;
 
 import ECS.Component;
 
-public class SpringRenderer extends Component
+public class SpriteRenderer extends Component
 {
 
     private boolean b_firstTime = false;
