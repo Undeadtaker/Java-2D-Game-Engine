@@ -17,7 +17,7 @@ public class Window
     private long final_window;
 
     // We create a new object Scene type
-    private static Scene currentScene = null;
+    private static Scene currentScene;
 
     private Window()
     {
@@ -59,6 +59,8 @@ public class Window
         }
         return Window.window;
     }
+
+    public static Scene getScene() { return get().currentScene; }
 
 
 
