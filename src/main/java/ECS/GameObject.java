@@ -1,5 +1,7 @@
 package ECS;
 
+import engine.Transform;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,16 +10,22 @@ public class GameObject
     // Variables
     private String name;
     private List<Component> Components_li;
-
+    public Transform transform;
 
 
     // Constructor
-    public GameObject(String name)
+    public GameObject(String name, Transform transform)
     {
         this.name = name;
         this.Components_li = new ArrayList<>();
+        this.transform = transform;
     }
 
+    public GameObject(String name)
+    {
+        // Overload the previous constructor
+        this(name, new Transform());
+    }
 
     // Methods
     public <Type extends Component> Type getComponent(Class<Type> componentClass)
