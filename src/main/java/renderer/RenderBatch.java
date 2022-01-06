@@ -3,6 +3,7 @@ package renderer;
 import ECS.Components.SpriteRenderer;
 import engine.Window;
 import org.joml.Vector4f;
+import util.AssetPool;
 
 import java.io.IOException;
 
@@ -39,15 +40,11 @@ public class RenderBatch
     // Constructor
     public RenderBatch(int maxBatchSize)
     {
-        try
-        {
-            shader = new Shader("assets/shaders/default.glsl");
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
 
+        // Instead of creating 10 new shaders, we only create one and only use the
+        // reference to it, therefore reducing memory consumption
+        shader = AssetPool.getShader("assets/shaders/default.glsl");
+        assert shader != null;
         shader.compile();
 
         this.sprites = new SpriteRenderer[maxBatchSize];

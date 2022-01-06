@@ -4,6 +4,9 @@ import ECS.Components.SpriteRenderer;
 import ECS.GameObject;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import util.AssetPool;
+
+import java.io.IOException;
 
 
 public class LevelEditorScene extends Scene {
@@ -39,16 +42,21 @@ public class LevelEditorScene extends Scene {
                 this.addGameObjectToScene(go_obj);
             }
         }
+
+        loadResources();
     }
+
 
     @Override
     public void update(float dt)
     {
         for (GameObject go_obj : this.gameObjects) go_obj.update(dt);
 
-        this.camera.position.x -= dt + .3f;
-        this.camera.position.y -= dt + .3f;
-
         this.renderer.render();
+    }
+
+    private void loadResources()
+    {
+        AssetPool.getShader("assets/shaders/default.glsl");
     }
 }
