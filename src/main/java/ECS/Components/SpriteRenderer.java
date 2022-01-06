@@ -1,25 +1,31 @@
 package ECS.Components;
 
 import ECS.Component;
+import org.joml.Vector4f;
 
 public class SpriteRenderer extends Component
 {
 
-    private boolean b_firstTime = false;
+    // Variables
+    private Vector4f color;
 
-    @Override
-    public void update(float dt)
+    // Constructor
+    public SpriteRenderer(Vector4f color)
     {
-        System.out.println("I am updating");
+        this.color = color;
     }
 
+
+    // Methods
     @Override
-    public void start()
+    public void update(float dt) {}
+
+    @Override
+    public void start() {}
+
+    public Vector4f getColor()
     {
-        if(!b_firstTime)
-        {
-            System.out.println("I am starting");
-            this.b_firstTime = true;
-        }
+        return this.color;
     }
+
 }
