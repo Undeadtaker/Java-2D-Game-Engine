@@ -3,7 +3,6 @@ package engine;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
-import util.Time;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -145,7 +144,7 @@ public class Window
     {
 
         // Initialize both start and current time
-        float beginTime = Time.getTime();
+        float beginTime = (float) glfwGetTime();
         float endTime;
         float dt = -1.0f;
 
@@ -155,7 +154,7 @@ public class Window
             // Poll Events, important for key listeners
             glfwPollEvents();
 
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            glClearColor(0, 0, 0, 0);
             glClear(GL_COLOR_BUFFER_BIT);
 
             if (dt >= 0) currentScene.update(dt + 0.03f);
@@ -164,7 +163,7 @@ public class Window
             glfwSwapBuffers(final_window);
 
             // We get the time at the end
-            endTime = Time.getTime();
+            endTime = (float) glfwGetTime();
             dt = endTime - beginTime;
             beginTime = endTime;
         }
