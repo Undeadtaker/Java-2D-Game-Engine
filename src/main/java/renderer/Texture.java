@@ -6,8 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.stb.STBImage.stbi_image_free;
-import static org.lwjgl.stb.STBImage.stbi_load;
+import static org.lwjgl.stb.STBImage.*;
 
 public class Texture
 {
@@ -38,6 +37,9 @@ public class Texture
         IntBuffer width = BufferUtils.createIntBuffer(1);
         IntBuffer height = BufferUtils.createIntBuffer(1);
         IntBuffer channels = BufferUtils.createIntBuffer(1);
+
+        // load image upwards since OpenGL does it automatically so it will be rendered the way its supposed to be
+        stbi_set_flip_vertically_on_load(true);
 
         // stbi is an image loading library
         ByteBuffer image = stbi_load(filepath, width, height, channels, 0);
