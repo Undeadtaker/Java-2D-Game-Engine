@@ -1,5 +1,6 @@
 package util;
 
+import ECS.Components.SpriteSheet;
 import renderer.Shader;
 import renderer.Texture;
 
@@ -15,6 +16,7 @@ public class AssetPool
     // which are only 1 byte in size
     private static Map<String, Shader> hashedShaders = new HashMap<>();
     private static Map<String, Texture> hashedTextures = new HashMap<>();
+    private static Map<String, SpriteSheet> hashedSpriteSheets = new HashMap<>();
 
     // METHODS
     public static Shader getShader(String resourceName)
@@ -56,6 +58,28 @@ public class AssetPool
             AssetPool.hashedTextures.put(file.getAbsolutePath(), texture);
             return texture;
         }
+    }
+
+
+    // Sprite Sheet
+    public static void addSpriteSheet(String resourceName, SpriteSheet spriteSheet)
+    {
+        File file = new File(resourceName);
+        if(!AssetPool.hashedSpriteSheets.containsKey(file.getAbsolutePath()))
+        {
+            AssetPool.hashedSpriteSheets.put(file.getAbsolutePath(), spriteSheet);
+        }
+    }
+
+    public static SpriteSheet getSpriteSheet(String resourceName)
+    {
+        File file = new File(resourceName);
+        assert AssetPool.hashedSpriteSheets.containsKey(file.getAbsolutePath()) : "Error, " +
+                "tried to access SpriteSheet " + resourceName + "\nTry to add the sheet " +
+                "to the assets folder";
+
+        // Return the sprite sheet if it exists, if not return null
+        return AssetPool.hashedSpriteSheets.getOrDefault(file.getAbsolutePath(), null);
     }
 
 
