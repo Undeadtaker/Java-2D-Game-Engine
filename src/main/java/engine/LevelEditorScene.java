@@ -1,18 +1,15 @@
 package engine;
 
-import ECS.Components.Sprite;
 import ECS.Components.SpriteRenderer;
 import ECS.Components.SpriteSheet;
 import ECS.GameObject;
 import org.joml.Vector2f;
-import org.joml.Vector4f;
 import util.AssetPool;
-
-import java.io.IOException;
 
 
 public class LevelEditorScene extends Scene {
 
+    private GameObject obj1;
 
     // Constructor + other methods
     public LevelEditorScene() {}
@@ -26,12 +23,12 @@ public class LevelEditorScene extends Scene {
 
         SpriteSheet spriteSheet = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
 
-        GameObject obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100),
+        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100),
                 new Vector2f(32, 32)));
         obj1.addComponent(new SpriteRenderer(spriteSheet.getSprite(0))); // index is which sprite from the spritesheet we want loaded
         this.addGameObjectToScene(obj1);
 
-        GameObject obj2 = new GameObject("Object 1", new Transform(new Vector2f(200, 100),
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(200, 100),
                 new Vector2f(32, 32)));
         obj2.addComponent(new SpriteRenderer(spriteSheet.getSprite(2))); // index is which sprite from the spritesheet we want loaded
         this.addGameObjectToScene(obj2);
@@ -42,6 +39,8 @@ public class LevelEditorScene extends Scene {
     @Override
     public void update(float dt)
     {
+        this.obj1.transform.position.x += 10 * dt;
+
         for (GameObject go_obj : this.gameObjects) go_obj.update(dt);
 
         this.renderer.render();
@@ -55,6 +54,8 @@ public class LevelEditorScene extends Scene {
         AssetPool.addSpriteSheet("assets/images/spritesheet.png",
                 new SpriteSheet(AssetPool.getTexture("assets/images/spritesheet.png"),
                         16, 16, 26, 0));
+
+        AssetPool.getTexture("assets/images/slav superstar.png");
 
     }
 }
