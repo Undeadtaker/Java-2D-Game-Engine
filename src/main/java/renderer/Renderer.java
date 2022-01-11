@@ -4,6 +4,7 @@ import ECS.Components.SpriteRenderer;
 import ECS.GameObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Renderer
@@ -33,7 +34,7 @@ public class Renderer
 
         for(RenderBatch rb : batches)
         {
-            if(rb.hasRoom())
+            if(rb.hasRoom() && rb.getZ_index() == spr.gameObject.getZ_index())
             {
                 Texture tex = spr.getTexture();
                 if(tex == null || (rb.hasTexture(tex) || rb.hasTextureRoom()))
@@ -47,10 +48,11 @@ public class Renderer
 
         if (!added)
         {
-            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE);
+            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, spr.gameObject.getZ_index());
             newBatch.start();
             batches.add(newBatch);
             newBatch.addSprite(spr);
+            Collections.sort(batches); // sort the batches according to their Z-index
         }
     }
 
