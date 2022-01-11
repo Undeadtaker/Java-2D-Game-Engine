@@ -22,6 +22,7 @@ public class SpriteRenderer extends Component
     {
         this.color = color;
         this.sprite = new Sprite(null);
+        this.b_isDirty = true;
     }
 
     // Constructor that will create a Sprite with a texture instead of just color
@@ -29,6 +30,7 @@ public class SpriteRenderer extends Component
     {
         this.sprite = sprite;
         this.color = new Vector4f(1, 1, 1, 1); // white
+        this.b_isDirty = true;
     }
 
 

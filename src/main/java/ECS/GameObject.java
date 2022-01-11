@@ -12,19 +12,23 @@ public class GameObject
     private List<Component> Components_li;
     public Transform transform;
 
+    // Every game object will now have a z-index
+    private int z_index;
+
 
     // Constructor
-    public GameObject(String name, Transform transform)
+    public GameObject(String name, Transform transform, int z_index)
     {
         this.name = name;
         this.Components_li = new ArrayList<>();
         this.transform = transform;
+        this.z_index = z_index;
     }
 
     public GameObject(String name)
     {
         // Overload the previous constructor
-        this(name, new Transform());
+        this(name, new Transform(), 0);
     }
 
     // Methods
@@ -86,5 +90,7 @@ public class GameObject
     {
         for(Component cmp : Components_li) cmp.start();
     }
+
+    public int getZ_index(){return this.z_index;}
 
 }

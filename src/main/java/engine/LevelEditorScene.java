@@ -24,12 +24,12 @@ public class LevelEditorScene extends Scene {
         SpriteSheet spriteSheet = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
 
         obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100),
-                new Vector2f(32, 32)));
+                new Vector2f(32, 32)), 1);
         obj1.addComponent(new SpriteRenderer(spriteSheet.getSprite(0))); // index is which sprite from the spritesheet we want loaded
         this.addGameObjectToScene(obj1);
 
         GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(200, 100),
-                new Vector2f(32, 32)));
+                new Vector2f(32, 32)), 1);
         obj2.addComponent(new SpriteRenderer(spriteSheet.getSprite(2))); // index is which sprite from the spritesheet we want loaded
         this.addGameObjectToScene(obj2);
 
