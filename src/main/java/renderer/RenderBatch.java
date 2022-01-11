@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
-public class RenderBatch
+public class RenderBatch implements Comparable<RenderBatch>
 {
     // Vertex
     // ======
@@ -44,10 +44,13 @@ public class RenderBatch
     private int vaoID, vboID;
     private int maxBatchSize;
     private Shader shader;
+    private int z_index;
 
     // Constructor
-    public RenderBatch(int maxBatchSize)
+    public RenderBatch(int maxBatchSize, int z_index)
     {
+
+        this.z_index = z_index;
 
         // Instead of creating 10 new shaders, we only create one and only use the
         // reference to it, therefore reducing memory consumption
@@ -278,6 +281,13 @@ public class RenderBatch
     }
     public boolean hasTextureRoom() {return this.textures.size() < 8;}
     public boolean hasTexture(Texture tex) {return this.textures.contains(tex);}
+    public int getZ_index(){return this.z_index;}
+
+    @Override
+    public int compareTo(RenderBatch o)
+    {
+        return Integer.compare(this.z_index, o.z_index);
+    }
 }
 
 
