@@ -23,6 +23,7 @@ public class LevelEditorScene extends Scene {
 
         SpriteSheet spriteSheet = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
 
+
         obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100),
                 new Vector2f(32, 32)), 1);
         obj1.addComponent(new SpriteRenderer(spriteSheet.getSprite(0))); // index is which sprite from the spritesheet we want loaded
