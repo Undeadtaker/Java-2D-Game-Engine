@@ -10,6 +10,6 @@ This is a personal/passion project built in Java. This was done by following a Y
 > The book in question is "Java 7: The Complete Reference" by Herbert Schildt (2012).
 
 
-The directory for main source files are in src/main/java
-The directory for GLSL shader is in assets/shaders
-The directory for images is in assets/images
+The directory for main source files are in src/main/java  
+The directory for GLSL shader is in assets/shaders  
+The directory for images is in assets/images  
