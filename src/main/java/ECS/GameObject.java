@@ -81,16 +81,15 @@ public class GameObject
         cmp.gameObject = this;
     }
 
+    public void updateComponentsInObjectImgui() {for (Component cmp : Components_li) cmp.UpdateComponentImgui();}
     public void update(float dt)
     {
         for(Component cmp : Components_li) cmp.update(dt);
     }
-
     public void start()
     {
         for(Component cmp : Components_li) cmp.start();
     }
-
     public int getZ_index(){return this.z_index;}
 
 }
