@@ -1,6 +1,7 @@
 package engine;
 
 import ECS.GameObject;
+import imgui.ImGui;
 import renderer.Renderer;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public abstract class Scene
     protected Renderer renderer = new Renderer();
     private boolean b_isRunning = false;
     protected List<GameObject> gameObjects = new ArrayList<>();
+    protected GameObject activeGameObject = null;
 
     public Scene() {}
     public abstract void update(float dt);
@@ -43,6 +45,20 @@ public abstract class Scene
 
     }
 
+    public void sceneImgui()
+    {
+        if (activeGameObject != null)
+        {
+            ImGui.begin("Inspector");
+            activeGameObject.updateComponentsInObjectImgui();
+            ImGui.end();
+        }
+
+        updateSceneImgui();
+    }
+
+    public void updateSceneImgui() {}
     public Camera getCamera() { return this.camera; }
+
 
 }
