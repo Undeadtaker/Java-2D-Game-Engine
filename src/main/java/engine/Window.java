@@ -5,20 +5,15 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import imgui.ImGui;
-import imgui.ImGuiIO;
-import imgui.flag.ImGuiConfigFlags;
-import imgui.gl3.ImGuiImplGl3;
-import imgui.glfw.ImGuiImplGlfw;
-
-
 public class Window
 {
-    private final int width, height;
+    private int width;
+    private int height;
     private final String title;
     private static Window window = null;
     private long pointer_final_window;
@@ -26,18 +21,11 @@ public class Window
     // We create a new object Scene type
     private static Scene currentScene;
 
-    // Private variables for ImGui
-    private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
-    private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
-
     private String glslVersion = null;
-    private final ImGUI_Engine imGUI_Engine_obj;
+    private ImGUI_Engine imGUI_Engine_obj;
 
-    private Window(ImGUI_Engine imGUIEngine)
+    private Window()
     {
-
-        this.imGUI_Engine_obj = imGUIEngine;
-
         // Standard format for HD, fullscreen
         this.width = 1920;
         this.height = 1080;
@@ -72,15 +60,16 @@ public class Window
     {
         if(Window.window == null)
         {
-            Window.window = new Window(new ImGUI_Engine());
+            Window.window = new Window();
         }
         return Window.window;
     }
 
     public static Scene getScene() { return get().currentScene; }
-
-
-
+    public static int getWidth() {return get().width;}
+    public static int getHeight() {return get().height;}
+    public static void setWidth(int newWidth) {get().width = newWidth;}
+    public static void setHeight(int newHeight) {get().height = newHeight;}
 
 
 
@@ -90,23 +79,15 @@ public class Window
     {
         System.out.println("Hello LWJGL" + Version.getVersion() + "!");
 
-        this.init_Window();
-        this.loop_Winow();
-    }
-
-    public void init_Window()
-    {
         this.init();
-        this.initImGui();
-        imGuiGlfw.init(pointer_final_window, true);
-        imGuiGl3.init(glslVersion);
-    }
+        this.loop();
 
-    private void initImGui()
-    {
-        ImGui.createContext();
-        ImGuiIO io = ImGui.getIO();
-        io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
+        glfwFreeCallbacks(pointer_final_window);
+        glfwDestroyWindow(pointer_final_window);
+
+        // Terminate GLFW and the free the error callback
+        glfwTerminate();
+        glfwSetErrorCallback(null).free();
     }
 
     public void init() throws IllegalStateException
@@ -139,6 +120,9 @@ public class Window
         // Create the window, glfwCreateWindow returns the memory address where this window is in the memory space
         pointer_final_window = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
 
+        // Fixes bug of out of scale for now
+        Window.setHeight(1017);
+
         if (pointer_final_window == NULL)
         {
             throw new IllegalStateException("Failed to create new GLFW window");
@@ -150,10 +134,14 @@ public class Window
         glfwSetCursorPosCallback(pointer_final_window, MouseListener::mousePosCallback);
         glfwSetMouseButtonCallback(pointer_final_window, MouseListener::mouseButtonCallback);
         glfwSetScrollCallback(pointer_final_window, MouseListener::mouseScrollCallback);
+        glfwSetKeyCallback(pointer_final_window, KeyListener::keyCallback); // Making callback to key listener
 
-        // Making callback to key listener
-        glfwSetKeyCallback(pointer_final_window, KeyListener::keyCallback);
-
+        // We need to inline the mouse position being created by the ImGUI
+        glfwSetWindowSizeCallback(pointer_final_window, (window_reference, newWidth, newHeight) ->
+        {
+            Window.setHeight(newHeight);
+            Window.setWidth(newWidth);
+        });
 
         // Make OpenGL context current
         glfwMakeContextCurrent(pointer_final_window);
@@ -176,12 +164,18 @@ public class Window
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
+        // Create ImGUI reference
+        this.imGUI_Engine_obj = new ImGUI_Engine(pointer_final_window);
+
+        // Initialize all ImGUI elements
+        this.imGUI_Engine_obj.initImGui();
+
         // Initialize scene
-        changeScene(0);
+        Window.changeScene(0);
 
     }
 
-    public void loop_Winow()
+    public void loop()
     {
 
         // Initialize both start and current time
@@ -201,22 +195,7 @@ public class Window
             // Update current scene selected
             if (dt >= 0) currentScene.update(dt + 0.03f);
 
-            // Everything ImGUI related, updated every frame
-            imGuiGlfw.newFrame();
-            ImGui.newFrame();
-
-            imGUI_Engine_obj.draw_test_window();
-
-            ImGui.render();
-            imGuiGl3.renderDrawData(ImGui.getDrawData());
-
-            if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable))
-            {
-                final long backupWindowPtr = org.lwjgl.glfw.GLFW.glfwGetCurrentContext();
-                ImGui.updatePlatformWindows();
-                ImGui.renderPlatformWindowsDefault();
-                org.lwjgl.glfw.GLFW.glfwMakeContextCurrent(backupWindowPtr);
-            }
+            this.imGUI_Engine_obj.update(dt + 0.03f, currentScene);
 
             // Swap back to the original window buffer
             glfwSwapBuffers(pointer_final_window);
@@ -227,9 +206,5 @@ public class Window
             beginTime = endTime;
         }
     }
-
-
-
-
 
 }
