@@ -20,6 +20,8 @@ public abstract class Scene
     public Scene() {}
     public abstract void update(float dt);
     public void init() {}
+    public void updateSceneImgui() {}
+    public Camera getCamera() { return this.camera; }
 
 
     public void start()
@@ -57,8 +59,6 @@ public abstract class Scene
         updateSceneImgui();
     }
 
-    public void updateSceneImgui() {}
-    public Camera getCamera() { return this.camera; }
 
 
 }

@@ -1,15 +1,21 @@
 package engine;
 
+import ECS.Components.Sprite;
 import ECS.Components.SpriteRenderer;
 import ECS.Components.SpriteSheet;
 import ECS.GameObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import imgui.ImGui;
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 import util.AssetPool;
 
 
 public class LevelEditorScene extends Scene {
 
     private GameObject obj1;
+    private SpriteRenderer obj1Sprite;
 
     // Constructor + other methods
     public LevelEditorScene() {}
@@ -24,15 +30,24 @@ public class LevelEditorScene extends Scene {
         SpriteSheet spriteSheet = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
 
 
-        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100),
-                new Vector2f(32, 32)), 1);
-        obj1.addComponent(new SpriteRenderer(spriteSheet.getSprite(0))); // index is which sprite from the spritesheet we want loaded
-        this.addGameObjectToScene(obj1);
+        obj1 = new GameObject("Object 1", new Transform(new Vector2f(400, 100),
+                new Vector2f(256, 256)), 2);
 
-        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(200, 100),
-                new Vector2f(32, 32)), 1);
-        obj2.addComponent(new SpriteRenderer(spriteSheet.getSprite(2))); // index is which sprite from the spritesheet we want loaded
+        obj1Sprite = new SpriteRenderer();
+        obj1Sprite.setColor(new Vector4f(1, 0, 0, .5f));
+        obj1.addComponent(obj1Sprite);
+        this.addGameObjectToScene(obj1);
+        this.activeGameObject = obj1;
+
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(600, 100),
+                new Vector2f(256, 256)), 3);
+
+        SpriteRenderer obj2Sprite = new SpriteRenderer();
+        obj2Sprite.setColor(new Vector4f(0, 1, 0, .5f));
+        obj2.addComponent(obj2Sprite);
         this.addGameObjectToScene(obj2);
+
+
 
     }
 
@@ -40,11 +55,16 @@ public class LevelEditorScene extends Scene {
     @Override
     public void update(float dt)
     {
-        this.obj1.transform.position.x += 10 * dt;
-
         for (GameObject go_obj : this.gameObjects) go_obj.update(dt);
-
         this.renderer.render();
+    }
+
+    @Override
+    public void updateSceneImgui()
+    {
+        ImGui.begin("Test window");
+        ImGui.text("Some random text");
+        ImGui.end();
     }
 
 

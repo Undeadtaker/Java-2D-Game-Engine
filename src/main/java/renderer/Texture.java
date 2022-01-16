@@ -12,12 +12,14 @@ public class Texture
 {
     // Variables
     private String filepath;
-    private final int texID;
+    private int texID;
     private int width, height;
 
 
     // Constructor
-    public Texture(String filepath)
+    public Texture(){}
+
+    public void init(String filepath)
     {
         this.filepath = filepath;
 

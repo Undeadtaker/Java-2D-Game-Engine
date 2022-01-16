@@ -81,7 +81,7 @@ public class GameObject
         cmp.gameObject = this;
     }
 
-    public void updateComponentsInObjectImgui() {for (Component cmp : Components_li) cmp.UpdateComponentImgui();}
+    public void updateComponentsInObjectImgui() {for (Component cmp : Components_li) cmp.updateComponentImgui();}
     public void update(float dt)
     {
         for(Component cmp : Components_li) cmp.update(dt);

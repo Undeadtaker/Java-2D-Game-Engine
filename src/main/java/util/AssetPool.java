@@ -54,7 +54,8 @@ public class AssetPool
 
         else
         {
-            Texture texture = new Texture(resourceName);
+            Texture texture = new Texture();
+            texture.init(resourceName);
             AssetPool.hashedTextures.put(file.getAbsolutePath(), texture);
             return texture;
         }

@@ -1,5 +1,6 @@
 package ECS.Components;
 
+import imgui.ImGui;
 import ECS.Component;
 import engine.Transform;
 import org.joml.Vector2f;
@@ -10,28 +11,11 @@ public class SpriteRenderer extends Component
 {
 
     // Variables
-    private Vector4f color;
-    private Sprite sprite;
+    private Vector4f color = new Vector4f(1, 1, 1, 1);
+    private Sprite sprite = new Sprite();
+
     boolean b_isDirty = false;
-
     private Transform lastTransform;
-
-
-    // Constructor
-    public SpriteRenderer(Vector4f color)
-    {
-        this.color = color;
-        this.sprite = new Sprite(null);
-        this.b_isDirty = true;
-    }
-
-    // Constructor that will create a Sprite with a texture instead of just color
-    public SpriteRenderer(Sprite sprite)
-    {
-        this.sprite = sprite;
-        this.color = new Vector4f(1, 1, 1, 1); // white
-        this.b_isDirty = true;
-    }
 
 
     // Methods
@@ -49,8 +33,20 @@ public class SpriteRenderer extends Component
     {
         // Check if the lastTransform is equal to the new version of Transform's values
         // by using the equals overriden method in Transform class
-        if(!this.lastTransform.equals(this.gameObject.transform)) {
+        if(!this.lastTransform.equals(this.gameObject.transform))
+        {
             this.gameObject.transform.copy(this.lastTransform);
+            this.b_isDirty = true;
+        }
+    }
+
+    @Override
+    public void updateComponentImgui()
+    {
+        float[] compColor = {color.x, color.y, color.z, color.w};
+        if (ImGui.colorPicker4("Color Picker: ", compColor))
+        {
+            this.color.set(compColor[0], compColor[1], compColor[2], compColor[3]);
             this.b_isDirty = true;
         }
     }
@@ -75,12 +71,13 @@ public class SpriteRenderer extends Component
     }
 
 
-    public boolean isDirty() {return this.b_isDirty;}
-    public void setClean() {this.b_isDirty = false;}
+
     public Vector4f getColor() {return this.color;}
     public Texture getTexture() {return sprite.getTexture();}
     public Vector2f[] getTexCoords() {return sprite.getTexCoords();}
 
+    public boolean isDirty() {return this.b_isDirty;}
+    public void setClean() {this.b_isDirty = false;}
 
 
 }
