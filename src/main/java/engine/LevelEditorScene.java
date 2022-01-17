@@ -1,11 +1,8 @@
 package engine;
 
-import ECS.Components.Sprite;
 import ECS.Components.SpriteRenderer;
 import ECS.Components.SpriteSheet;
 import ECS.GameObject;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import imgui.ImGui;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -24,8 +21,13 @@ public class LevelEditorScene extends Scene {
     public void init()
     {
         this.loadResources();
-
         this.camera = new Camera(new Vector2f(0, 0));
+
+        // Load gameObjects from json
+        if(b_levelLoaded)
+        {
+            return;
+        }
 
         SpriteSheet spriteSheet = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
 
@@ -46,8 +48,6 @@ public class LevelEditorScene extends Scene {
         obj2Sprite.setColor(new Vector4f(0, 1, 0, .5f));
         obj2.addComponent(obj2Sprite);
         this.addGameObjectToScene(obj2);
-
-
 
     }
 
