@@ -1,5 +1,6 @@
 package engine;
 
+import ECS.Components.RigidBody;
 import ECS.Components.SpriteRenderer;
 import ECS.Components.SpriteSheet;
 import ECS.GameObject;
@@ -13,6 +14,7 @@ public class LevelEditorScene extends Scene {
 
     private GameObject obj1;
     private SpriteRenderer obj1Sprite;
+    private RigidBody rigid = new RigidBody();
 
     // Constructor + other methods
     public LevelEditorScene() {}
@@ -26,20 +28,26 @@ public class LevelEditorScene extends Scene {
         // Load gameObjects from json
         if(b_levelLoaded)
         {
+            this.activeGameObject = gameObjects.get(0);
+
             return;
         }
 
         SpriteSheet spriteSheet = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
 
 
-        obj1 = new GameObject("Object 1", new Transform(new Vector2f(400, 100),
-                new Vector2f(256, 256)), 2);
+        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100),
+                new Vector2f(20, 20)), 2);
+
+        System.out.print(rigid.toString());
+
+        obj1.addComponent(rigid);
+
 
         obj1Sprite = new SpriteRenderer();
         obj1Sprite.setColor(new Vector4f(1, 0, 0, .5f));
         obj1.addComponent(obj1Sprite);
         this.addGameObjectToScene(obj1);
-        this.activeGameObject = obj1;
 
         GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(600, 100),
                 new Vector2f(256, 256)), 3);
