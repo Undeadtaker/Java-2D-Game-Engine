@@ -38,6 +38,8 @@ public class SpriteSheet
             Sprite sprite = new Sprite();
             sprite.setTexture(this.texture);
             sprite.setTexCoords(texCoords);
+            sprite.setWidth(spriteWidth);
+            sprite.setHeight(spriteHeight);
             this.sprites_li.add(sprite);
 
             currentX += spriteWidth + spacing;
@@ -53,6 +55,7 @@ public class SpriteSheet
 
     // Returns the sprite the user asked from this spritesheet at index
     public Sprite getSprite(int index){return this.sprites_li.get(index);}
+    public int size(){return sprites_li.size();}
 
 }
 
