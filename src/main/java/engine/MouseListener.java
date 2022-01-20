@@ -1,5 +1,7 @@
 package engine;
 
+import org.joml.Vector4f;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class MouseListener
@@ -155,6 +157,34 @@ public class MouseListener
             return get().mouseButtonPressed[button];
         }
         else return false;
+    }
+
+    public static float getOrthoX()
+    {
+        float currentX = getX();
+        // Converts to -1 to 1 range for the normalized world coordinates
+        currentX = (currentX / (float) Window.getWidth()) * 2.0f - 1.0f;
+        Vector4f tmp = new Vector4f(currentX, 0, 0, 1);
+
+        // Undo normalized world coordinates, now we should get real world coordinates 1920 x 1080
+        tmp.mul(Window.getScene().getCamera().getInverseProjection().mul(Window.getScene().getCamera().getInverseView()));
+        currentX = tmp.x;
+
+        return currentX;
+    }
+
+    public static float getOrthoY()
+    {
+        float currentY = getY();
+        // Converts to -1 to 1 range for the normalized world coordinates
+        currentY = (currentY / (float) Window.getWidth()) * 2.0f - 1.0f;
+        Vector4f tmp = new Vector4f(0, currentY, 0, 1);
+
+        // Undo normalized world coordinates, now we should get real world coordinates 1920 x 1080
+        tmp.mul(Window.getScene().getCamera().getInverseProjection().mul(Window.getScene().getCamera().getInverseView()));
+        currentY = tmp.y;
+
+        return currentY;
     }
 
 }
