@@ -18,12 +18,14 @@
         "type": "ECS.Components.SpriteRenderer",
         "properties": {
           "color": {
-            "x": 1.0,
-            "y": 0.0,
-            "z": 0.0,
+            "x": 0.013392561,
+            "y": 0.9955157,
+            "z": 0.6916299,
             "w": 0.5
           },
           "sprite": {
+            "width": 0.0,
+            "height": 0.0,
             "texCoords": [
               {
                 "x": 1.0,
@@ -82,6 +84,8 @@
             "w": 0.5
           },
           "sprite": {
+            "width": 0.0,
+            "height": 0.0,
             "texCoords": [
               {
                 "x": 1.0,
