@@ -13,7 +13,7 @@ public class MouseListener
     private boolean b_IsDragging;
 
     // Create array of which mouse button was pressed
-    private final boolean[] mouseButtonPressed = new boolean[3];
+    private final boolean[] mouseButtonPressed = new boolean[9];
 
 
     // Creating private constructor because we don't need anyone forming this class outside this class
@@ -175,9 +175,9 @@ public class MouseListener
 
     public static float getOrthoY()
     {
-        float currentY = getY();
+        float currentY = Window.getHeight() - getY();
         // Converts to -1 to 1 range for the normalized world coordinates
-        currentY = (currentY / (float) Window.getWidth()) * 2.0f - 1.0f;
+        currentY = (currentY / (float) Window.getHeight()) * 2.0f - 1.0f;
         Vector4f tmp = new Vector4f(0, currentY, 0, 1);
 
         // Undo normalized world coordinates, now we should get real world coordinates 1920 x 1080
