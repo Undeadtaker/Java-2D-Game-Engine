@@ -7,6 +7,11 @@ import java.util.List;
 
 public class GameObject
 {
+
+    // For global ID system
+    private static int ID_COUNTER = 0;
+    public int uid = -1;
+
     // Variables
     private String name;
     private List<Component> Components_li;
@@ -23,12 +28,7 @@ public class GameObject
         this.Components_li = new ArrayList<>();
         this.transform = transform;
         this.z_index = z_index;
-    }
-
-    public GameObject(String name)
-    {
-        // Overload the previous constructor
-        this(name, new Transform(), 0);
+        this.uid = ID_COUNTER++;
     }
 
     // Methods
@@ -77,6 +77,9 @@ public class GameObject
 
     public void addComponent(Component cmp)
     {
+        // Every time we add a component, we generate an ID
+        cmp.generateID();
+
         this.Components_li.add(cmp);
         cmp.gameObject = this;
     }
@@ -92,4 +95,9 @@ public class GameObject
     }
     public int getZ_index(){return this.z_index;}
 
+    // For ID system
+    public void generateID() {if (this.uid == -1) {this.uid = ID_COUNTER++;}}
+    public int getUid() {return this.uid;}
+    public static void init(int maxID) {ID_COUNTER = maxID;}
+    public List<Component> getAllComponents() {return this.Components_li;}
 }

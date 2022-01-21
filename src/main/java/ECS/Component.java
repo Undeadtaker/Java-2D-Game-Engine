@@ -9,10 +9,15 @@ import java.lang.reflect.Modifier;
 
 public abstract class Component
 {
+
+    // Global ID for every Component rendered from serializing. Is used to avoid
+    // creating phantom objects, basically a duplicate of an object that is
+    // not useful to us in any way. The uid is the unique ID of every Component object.
+    public static int ID_COUNTER = 0;
+    private int uid = -1;
+
     public transient GameObject gameObject = null;
 
-    public void update(float dt) {};
-    public void start() {}
 
 
     public void updateComponentImgui()
@@ -80,5 +85,13 @@ public abstract class Component
             e.printStackTrace();
         }
     }
+
+    // The first ID is always going to be 0 since uid is initialized at -1
+    public void generateID() {if (this.uid == -1) {this.uid = ID_COUNTER++;}}
+    public int getUid() {return this.uid;}
+    public static void init(int maxID) {ID_COUNTER = maxID;}
+
+    public void update(float dt) {};
+    public void start() {}
 
 }
