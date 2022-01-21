@@ -1,6 +1,8 @@
 package engine.GUI;
 
-import engine.Scene;
+import engine.KeyListener;
+import engine.MouseListener;
+import scenes.Scene;
 import engine.Window;
 import imgui.ImFontAtlas;
 import imgui.ImFontConfig;
@@ -101,6 +103,13 @@ public class ImGUI_Engine
             io.setKeyShift(io.getKeysDown(GLFW_KEY_LEFT_SHIFT) || io.getKeysDown(GLFW_KEY_RIGHT_SHIFT));
             io.setKeyAlt(io.getKeysDown(GLFW_KEY_LEFT_ALT) || io.getKeysDown(GLFW_KEY_RIGHT_ALT));
             io.setKeySuper(io.getKeysDown(GLFW_KEY_LEFT_SUPER) || io.getKeysDown(GLFW_KEY_RIGHT_SUPER));
+
+            // If ImGUi does not need the key event
+            if (!io.getWantCaptureKeyboard())
+            {
+                KeyListener.keyCallback(w, key, scancode, action, mods);
+            }
+
         });
 
         glfwSetCharCallback(pointer_final_window_reference, (w, c) ->
@@ -124,6 +133,13 @@ public class ImGUI_Engine
             {
                 ImGui.setWindowFocus(null);
             }
+
+            // If ImGUi does not need the mouse event
+            if(!io.getWantCaptureMouse())
+            {
+                MouseListener.mouseButtonCallback(pointer_final_window_reference, button, action, mods);
+            }
+
         });
 
         glfwSetScrollCallback(pointer_final_window_reference, (w, xOffset, yOffset) ->
