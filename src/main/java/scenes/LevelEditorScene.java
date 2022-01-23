@@ -8,7 +8,9 @@ import engine.Transform;
 import imgui.ImGui;
 import imgui.ImVec2;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
+import renderer.DebugDraw;
 import util.AssetPool;
 
 
@@ -31,12 +33,12 @@ public class LevelEditorScene extends Scene {
         this.camera = new Camera(new Vector2f(0, 0));
 
         spriteSheet = AssetPool.getSpriteSheet("assets/images/decorationsAndBlocks.png");
+        DebugDraw.addLine2D(new Vector2f(0, 0), new Vector2f(800, 800), new Vector3f(1, 0, 0), 120);
 
         // Load gameObjects from json
         if(b_levelLoaded)
         {
             this.activeGameObject = gameObjects.get(0);
-
             return;
         }
 

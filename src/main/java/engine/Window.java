@@ -4,6 +4,7 @@ import engine.GUI.ImGUI_Engine;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import renderer.DebugDraw;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -193,11 +194,17 @@ public class Window
             // Poll Events, important for key listeners
             glfwPollEvents();
 
+            DebugDraw.beginFrame();
+
             glClearColor(0, 0, 0, 0);
             glClear(GL_COLOR_BUFFER_BIT);
 
             // Update current scene selected
-            if (dt >= 0) currentScene.update(dt + 0.03f);
+            if (dt >= 0)
+            {
+                DebugDraw.draw();
+                currentScene.update(dt + 0.03f);
+            }
 
             this.imGUI_Engine_obj.update(dt + 0.03f, currentScene);
 
