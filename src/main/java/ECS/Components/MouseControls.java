@@ -7,6 +7,7 @@ import ECS.Component;
 import ECS.GameObject;
 import engine.MouseListener;
 import engine.Window;
+import util.Helpers;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
@@ -27,8 +28,11 @@ public class MouseControls extends Component
     {
         if(heldObject != null)
         {
-            heldObject.transform.position.x = MouseListener.getOrthoX() - 16;
-            heldObject.transform.position.y = MouseListener.getOrthoY() - 16;
+            heldObject.transform.position.x = MouseListener.getOrthoX();
+            heldObject.transform.position.y = MouseListener.getOrthoY();
+
+            heldObject.transform.position.x = (int) (heldObject.transform.position.x / Helpers.GRID_WIDTH) * Helpers.GRID_WIDTH;
+            heldObject.transform.position.y = (int) (heldObject.transform.position.y / Helpers.GRID_HEIGHT) * Helpers.GRID_HEIGHT;
 
             if(MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT))
             {
