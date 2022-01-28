@@ -5,6 +5,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import renderer.DebugDraw;
+import renderer.FrameBuffer;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -27,6 +28,7 @@ public class Window
 
     private String glslVersion = null;
     private ImGUI_Engine imGUI_Engine_obj;
+    private FrameBuffer frameBuffer;
 
     private Window()
     {
@@ -175,6 +177,8 @@ public class Window
         // Initialize all ImGUI elements
         this.imGUI_Engine_obj.initImGui();
 
+        this.frameBuffer = new FrameBuffer(1920, 1080);
+
         // Initialize scene
         Window.changeScene(0);
 
@@ -199,12 +203,17 @@ public class Window
             glClearColor(0, 0, 0, 0);
             glClear(GL_COLOR_BUFFER_BIT);
 
+            // FrameBuffer
+            // this.frameBuffer.bind();
+
             // Update current scene selected
             if (dt >= 0)
             {
                 DebugDraw.draw();
                 currentScene.update(dt + 0.03f);
             }
+
+            this.frameBuffer.unbind();
 
             this.imGUI_Engine_obj.update(dt + 0.03f, currentScene);
 

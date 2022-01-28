@@ -226,7 +226,7 @@ public class RenderBatch implements Comparable<RenderBatch>
             {
                 // Loop over textures with i as their index, if any equal to the
                 // current texture we are trying to pass, assign texID
-                if(this.textures.get(i) == sprite.getTexture())
+                if(this.textures.get(i).equals(sprite.getTexture()))
                 {
                     texID = i + 1;
                     break;

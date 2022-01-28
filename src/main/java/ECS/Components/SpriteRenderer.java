@@ -78,6 +78,7 @@ public class SpriteRenderer extends Component
 
     public boolean isDirty() {return this.b_isDirty;}
     public void setClean() {this.b_isDirty = false;}
+    public void setTexture(Texture texture) {this.sprite.setTexture(texture);}
 
 
 }
