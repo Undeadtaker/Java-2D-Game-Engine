@@ -2,6 +2,7 @@ package engine.GUI;
 
 import engine.KeyListener;
 import engine.MouseListener;
+import imgui.type.ImBoolean;
 import scenes.Scene;
 import engine.Window;
 import imgui.ImFontAtlas;
@@ -49,6 +50,9 @@ public class ImGUI_Engine
 
         io.setIniFilename("imgui.ini"); // We don't want to save .ini file
         io.setConfigFlags(ImGuiConfigFlags.NavEnableKeyboard); // Navigation with keyboard
+
+        io.setConfigFlags(ImGuiConfigFlags.DockingEnable); // Enable docking
+
         io.setBackendFlags(ImGuiBackendFlags.HasMouseCursors); // Mouse cursors to display while resizing windows etc.
         io.setBackendPlatformName("imgui_java_impl_glfw");
 
@@ -210,11 +214,13 @@ public class ImGUI_Engine
 
         // Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
         ImGui.newFrame();
+        setupDockSpace();
 
         // Goes through the current Scene, checks if active game object is not null, if not
         // call update for scene, call object update, for every component in object call update
         currentScene.sceneImgui();
         ImGui.showDemoWindow();
+        ImGui.end();
 
         ImGui.render();
         endFrame();
@@ -258,22 +264,31 @@ public class ImGUI_Engine
     }
 
 
-    public void draw_test_window()
+    private void setupDockSpace()
     {
-        ImGui.begin("Cool Window");
+        int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
 
-        if (ImGui.button("I am a button")) {b_showText = true;}
+        ImGui.setWindowPos(0.0f, 0.0f, ImGuiCond.Always);
+        ImGui.setNextWindowSize(Window.getWidth(), Window.getHeight());
 
-        if (b_showText)
-        {
-            ImGui.text("You clicked a button");
-            ImGui.sameLine();
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
 
-            if (ImGui.button("Stop showing text"))
-            {
-                b_showText = false;
-            }
-        }
-        ImGui.end();
+        windowFlags |=
+                ImGuiWindowFlags.NoTitleBar |
+                ImGuiWindowFlags.NoCollapse |
+                // ImGuiWindowFlags.NoResize |
+                ImGuiWindowFlags.NoMove |
+                ImGuiWindowFlags.NoBringToFrontOnFocus |
+                ImGuiWindowFlags.NoNavFocus;
+
+        ImGui.begin("Dockspace Demo", new ImBoolean(true), windowFlags);
+        ImGui.popStyleVar(2);
+
+        // Dockspace
+        ImGui.dockSpace(ImGui.getID("Dockspace"));
+
+
     }
+
 }
