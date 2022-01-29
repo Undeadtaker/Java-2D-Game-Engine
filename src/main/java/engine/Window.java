@@ -33,8 +33,8 @@ public class Window
     private Window()
     {
         // Standard format for HD, fullscreen
-        this.width = 1920;
-        this.height = 1080;
+        this.width = 2560;
+        this.height = 1440;
         this.title = "2D_G4M3_3NG1N3";
 
     }
@@ -77,6 +77,8 @@ public class Window
     public static int getHeight() {return get().height;}
     public static void setWidth(int newWidth) {get().width = newWidth;}
     public static void setHeight(int newHeight) {get().height = newHeight;}
+    public static FrameBuffer getFrameBuffer() {return get().frameBuffer;}
+    public static float getTargetAspectRatio() {return 16.0f / 9.0f;}
 
 
 
@@ -127,8 +129,6 @@ public class Window
         // Create the window, glfwCreateWindow returns the memory address where this window is in the memory space
         pointer_final_window = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
 
-        // Fixes bug of out of scale for now
-        Window.setHeight(1017);
 
         if (pointer_final_window == NULL)
         {
@@ -177,7 +177,8 @@ public class Window
         // Initialize all ImGUI elements
         this.imGUI_Engine_obj.initImGui();
 
-        this.frameBuffer = new FrameBuffer(1920, 1080);
+        this.frameBuffer = new FrameBuffer(2560, 1440);
+        glViewport(0, 0, 2560, 1440);
 
         // Initialize scene
         Window.changeScene(0);
@@ -200,11 +201,11 @@ public class Window
 
             DebugDraw.beginFrame();
 
+            // FrameBuffer
+            this.frameBuffer.bind();
+
             glClearColor(0, 0, 0, 0);
             glClear(GL_COLOR_BUFFER_BIT);
-
-            // FrameBuffer
-            // this.frameBuffer.bind();
 
             // Update current scene selected
             if (dt >= 0)

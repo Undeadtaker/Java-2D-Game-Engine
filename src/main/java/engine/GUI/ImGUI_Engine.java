@@ -1,5 +1,6 @@
 package engine.GUI;
 
+import editor.GameViewWindow;
 import engine.KeyListener;
 import engine.MouseListener;
 import imgui.type.ImBoolean;
@@ -220,6 +221,10 @@ public class ImGUI_Engine
         // call update for scene, call object update, for every component in object call update
         currentScene.sceneImgui();
         ImGui.showDemoWindow();
+
+        // Show GameViewWindow
+        GameViewWindow.imgui();
+
         ImGui.end();
 
         ImGui.render();
@@ -277,7 +282,7 @@ public class ImGUI_Engine
         windowFlags |=
                 ImGuiWindowFlags.NoTitleBar |
                 ImGuiWindowFlags.NoCollapse |
-                // ImGuiWindowFlags.NoResize |
+                ImGuiWindowFlags.NoResize |
                 ImGuiWindowFlags.NoMove |
                 ImGuiWindowFlags.NoBringToFrontOnFocus |
                 ImGuiWindowFlags.NoNavFocus;

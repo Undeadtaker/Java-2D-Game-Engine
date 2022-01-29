@@ -32,7 +32,7 @@ public class SpriteRenderer extends Component
     public void update(float dt)
     {
         // Check if the lastTransform is equal to the new version of Transform's values
-        // by using the equals overriden method in Transform class
+        // by using the equals overridden method in Transform class
         if(!this.lastTransform.equals(this.gameObject.transform))
         {
             this.gameObject.transform.copy(this.lastTransform);
