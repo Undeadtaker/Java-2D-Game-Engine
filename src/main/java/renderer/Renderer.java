@@ -12,6 +12,7 @@ public class Renderer
     // VARIABLES
     private final int MAX_BATCH_SIZE = 1000;
     private List<RenderBatch> batches;
+    private static Shader currentShader;
 
     // CONSTRUCTOR
     public Renderer()
@@ -58,11 +59,16 @@ public class Renderer
 
     public void render()
     {
+        currentShader.use();
+
         for(RenderBatch rb : batches)
         {
             rb.render();
         }
     }
+
+    public static void bindShader(Shader shader) {currentShader = shader;}
+    public static Shader getBoundShader() {return currentShader;}
 
 
 

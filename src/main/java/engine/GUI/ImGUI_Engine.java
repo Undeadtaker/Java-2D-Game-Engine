@@ -140,7 +140,7 @@ public class ImGUI_Engine
             }
 
             // If ImGUi does not need the mouse event
-            if(!io.getWantCaptureMouse())
+            if(!io.getWantCaptureMouse() || GameViewWindow.getWantCaptureMouse())
             {
                 MouseListener.mouseButtonCallback(pointer_final_window_reference, button, action, mods);
             }

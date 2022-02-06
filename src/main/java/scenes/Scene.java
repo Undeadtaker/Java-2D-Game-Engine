@@ -30,6 +30,7 @@ public abstract class Scene
 
     public Scene() {}
     public abstract void update(float dt);
+    public abstract void render();
     public void init() {}
     public Camera getCamera() { return this.camera; }
     public void updateSceneImgui() {}

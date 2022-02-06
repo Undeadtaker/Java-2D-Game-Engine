@@ -80,8 +80,11 @@ public class LevelEditorScene extends Scene {
                 30.0f, new Vector3f(0, 1, 0), 1);
 
         for (GameObject go_obj : this.gameObjects) go_obj.update(dt);
-        this.renderer.render();
+
     }
+
+    @Override
+    public void render() {this.renderer.render();}
 
     @Override
     public void updateSceneImgui()

@@ -1,5 +1,7 @@
 package engine;
 
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -11,6 +13,10 @@ public class MouseListener
     private static MouseListener ML;
     private double scrollX, scrollY, xPos, yPos, lastX, lastY;
     private boolean b_IsDragging;
+
+    private Vector2f gameViewportPos = new Vector2f();
+    private Vector2f gameViewportSize = new Vector2f();
+
 
     // Create array of which mouse button was pressed
     private final boolean[] mouseButtonPressed = new boolean[9];
@@ -161,13 +167,16 @@ public class MouseListener
 
     public static float getOrthoX()
     {
-        float currentX = getX();
+        float currentX = getX() - get().gameViewportPos.x;
         // Converts to -1 to 1 range for the normalized world coordinates
-        currentX = (currentX / (float) Window.getWidth()) * 2.0f - 1.0f;
+        currentX = (currentX / get().gameViewportSize.x) * 2.0f - 1.0f;
         Vector4f tmp = new Vector4f(currentX, 0, 0, 1);
 
+        Matrix4f viewProjection = new Matrix4f();
+        Window.getScene().getCamera().getInverseView().mul(Window.getScene().getCamera().getInverseProjection(), viewProjection);
+
         // Undo normalized world coordinates, now we should get real world coordinates 1920 x 1080
-        tmp.mul(Window.getScene().getCamera().getInverseProjection().mul(Window.getScene().getCamera().getInverseView()));
+        tmp.mul(viewProjection);
         currentX = tmp.x;
 
         return currentX;
@@ -175,17 +184,23 @@ public class MouseListener
 
     public static float getOrthoY()
     {
-        float currentY = Window.getHeight() - getY();
+        float currentY = getY() - get().gameViewportPos.y;
         // Converts to -1 to 1 range for the normalized world coordinates
-        currentY = (currentY / (float) Window.getHeight()) * 2.0f - 1.0f;
+        currentY = -((currentY / get().gameViewportSize.y) * 2.0f - 1.0f);
         Vector4f tmp = new Vector4f(0, currentY, 0, 1);
 
+        Matrix4f viewProjection = new Matrix4f();
+        Window.getScene().getCamera().getInverseView().mul(Window.getScene().getCamera().getInverseProjection(), viewProjection);
+
         // Undo normalized world coordinates, now we should get real world coordinates 1920 x 1080
-        tmp.mul(Window.getScene().getCamera().getInverseProjection().mul(Window.getScene().getCamera().getInverseView()));
+        tmp.mul(viewProjection);
         currentY = tmp.y;
 
         return currentY;
     }
+
+    public static void setGameViewportPos(Vector2f gameViewportPos) {get().gameViewportPos.set(gameViewportPos);}
+    public static void setGameViewportSize(Vector2f gameViewportSize) {get().gameViewportSize.set(gameViewportSize);}
 
 }
 
